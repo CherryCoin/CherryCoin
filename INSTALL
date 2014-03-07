@@ -1,0 +1,9 @@
+Building Cherrycoin
+
+See doc/readme-qt.rst for instructions on building Cherrycoin-Qt,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of Cherrycoin.
+
+See doc/build-*.txt for instructions on building cherrycoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of Cherrycoin.
