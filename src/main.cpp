@@ -2740,7 +2740,7 @@ bool LoadBlockIndex()
         pchMessageStart[1] = 0xc1;
         pchMessageStart[2] = 0xb7;
         pchMessageStart[3] = 0xdc;
-        hashGenesisBlock = uint256("0x");
+        hashGenesisBlock = uint256("0xf8d9d0159874173cf9a0faef2961a3a45c07de5906b0dee437c6aaed2529090c");
     }
 
     //
@@ -2766,11 +2766,11 @@ bool InitBlockIndex() {
     // Only add the genesis block if not reindexing (in which case we reuse the one already on disk)
     if (!fReindex) {
         // Genesis Block:
-        // CBlock(hash=12a765e31ffd4059bada, PoW=0000050c34a64b415b6b, ver=1, hashPrevBlock=00000000000000000000, hashMerkleRoot=97ddfbbae6, nTime=1317972665, nBits=1e0ffff0, nNonce=2084524493, vtx=1)
-        //   CTransaction(hash=97ddfbbae6, ver=1, vin.size=1, vout.size=1, nLockTime=0)
-        //     CTxIn(COutPoint(0000000000, -1), coinbase 04ffff001d0104404e592054696d65732030352f4f63742f32303131205374657665204a6f62732c204170706c65e280997320566973696f6e6172792c2044696573206174203536)
-        //     CTxOut(nValue=50.00000000, scriptPubKey=040184710fa689ad5023690c80f3a4)
-        //   vMerkleTree: 97ddfbbae6
+        // CBlock(hash=f8d9d0159874173cf9a0faef2961a3a45c07de5906b0dee437c6aaed2529090c, input=0100000000000000000000000000000000000000000000000000000000000000000000004429df3ef5fb0b32dfcfb90540c703d82ebcaf613393bbda9e6e9f43d1fc392a96d71a53f0ff0f1ee9c20f00, PoW=0000041e608f79806f182ff1499f2e455f1f7e31b5118623b0e8651f81f3e149, ver=1, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944, nTime=1394268054, nBits=1e0ffff0, nNonce=1032937, vtx=1)
+        // CTransaction(hash=2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+        // CTxIn(COutPoint(0000000000000000000000000000000000000000000000000000000000000000, 4294967295), coinbase 04ffff001d0104324d617263682037746820323031342c20436865727279636f696e2077617320616e6e6f756e636564202d2052334834426974)
+        // CTxOut(nValue=100.00000000, scriptPubKey=040184710fa689ad5023690c80f3a4)
+        // vMerkleTree: 2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944 
 
         // Genesis block
         const char* pszTimestamp = "March 7th 2014, Cherrycoin was announced - R3H4Bit";
@@ -2792,7 +2792,7 @@ bool InitBlockIndex() {
         if (fTestNet)
         {
             block.nTime    = 1394268054;
-            block.nNonce   = 0;
+            block.nNonce   = 1032937;
         }
 
         //// debug print
