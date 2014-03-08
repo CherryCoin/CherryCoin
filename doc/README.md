@@ -1,4 +1,4 @@
-Cherrycoin 0.8.x BETA
+Cherrycoin 1.0.x BETA
 ====================
 
 Copyright (c) 2009-2013 Bitcoin Developers

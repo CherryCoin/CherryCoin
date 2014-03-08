@@ -5,7 +5,7 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 1.0.0.2
+!define VERSION 1.0.2
 !define COMPANY "Cherrycoin project"
 !define URL http://www.cherrycoin.org/
 
