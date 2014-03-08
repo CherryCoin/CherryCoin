@@ -1065,7 +1065,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 100 * COIN;
     
-    // Premine: first ten blocks contain 8k CHE (total premine of 8%)
+    // Premine: first ten blocks contain 8k CHS (total premine of 8%)
         if(nHeight < 11)
         {
             nSubsidy = 800000 * COIN;
