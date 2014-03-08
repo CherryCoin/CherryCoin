@@ -31,7 +31,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0x12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a195a7e7e04bfe2");
+uint256 hashGenesisBlock("0xc6d947c7f0c45a5de9bf9b88720e132cdec88c872513079dca02c5bb34c32d86");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Cherrycoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -2766,11 +2766,14 @@ bool InitBlockIndex() {
     // Only add the genesis block if not reindexing (in which case we reuse the one already on disk)
     if (!fReindex) {
         // Genesis Block:
-        // CBlock(hash=f8d9d0159874173cf9a0faef2961a3a45c07de5906b0dee437c6aaed2529090c, input=0100000000000000000000000000000000000000000000000000000000000000000000004429df3ef5fb0b32dfcfb90540c703d82ebcaf613393bbda9e6e9f43d1fc392a96d71a53f0ff0f1ee9c20f00, PoW=0000041e608f79806f182ff1499f2e455f1f7e31b5118623b0e8651f81f3e149, ver=1, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944, nTime=1394268054, nBits=1e0ffff0, nNonce=1032937, vtx=1)
-        // CTransaction(hash=2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944, ver=1, vin.size=1, vout.size=1, nLockTime=0)
-        // CTxIn(COutPoint(0000000000000000000000000000000000000000000000000000000000000000, 4294967295), coinbase 04ffff001d0104324d617263682037746820323031342c20436865727279636f696e2077617320616e6e6f756e636564202d2052334834426974)
-        // CTxOut(nValue=100.00000000, scriptPubKey=040184710fa689ad5023690c80f3a4)
-        // vMerkleTree: 2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944 
+        //2014-03-08 20:14:33 block.nTime = 1394282761 
+        //2014-03-08 20:14:33 block.nNonce = 1761564 
+        //2014-03-08 20:14:33 block.GetHash = c6d947c7f0c45a5de9bf9b88720e132cdec88c872513079dca02c5bb34c32d86
+        //2014-03-08 20:14:33 CBlock(hash=c6d947c7f0c45a5de9bf9b88720e132cdec88c872513079dca02c5bb34c32d86, input=0100000000000000000000000000000000000000000000000000000000000000000000004429df3ef5fb0b32dfcfb90540c703d82ebcaf613393bbda9e6e9f43d1fc392a09111b53f0ff0f1e1ce11a00, PoW=000009aa44c106e4bf0cbe46497c663c313800d52218b8ed9d9eff8f8e135e2e, ver=1, hashPrevBlock=0000000000000000000000000000000000000000000000000000000000000000, hashMerkleRoot=2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944, nTime=1394282761, nBits=1e0ffff0, nNonce=1761564, vtx=1)
+        //2014-03-08 20:14:33   CTransaction(hash=2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+        //    CTxIn(COutPoint(0000000000000000000000000000000000000000000000000000000000000000, 4294967295), coinbase 04ffff001d0104324d617263682037746820323031342c20436865727279636f696e2077617320616e6e6f756e636564202d2052334834426974)
+        //    CTxOut(nValue=100.00000000, scriptPubKey=040184710fa689ad5023690c80f3a4)
+        //  vMerkleTree: 2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944
 
         // Genesis block
         const char* pszTimestamp = "March 7th 2014, Cherrycoin was announced - R3H4Bit";
@@ -2787,7 +2790,7 @@ bool InitBlockIndex() {
         block.nVersion = 1;
         block.nTime    = 1394282761;
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 0;
+        block.nNonce   = 1761564;
 
         if (fTestNet)
         {
@@ -2801,51 +2804,6 @@ bool InitBlockIndex() {
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
         assert(block.hashMerkleRoot == uint256("0x2a39fcd1439f6e9edabb933361afbc2ed803c74005b9cfdf320bfbf53edf2944"));
-        
-        // If genesis block hash does not match, then generate new genesis hash.
-        if (true && block.GetHash() != hashGenesisBlock)
-        {
-            printf("Searching for genesis block...\n");
-            // This will figure out a valid hash and Nonce if you're
-            // creating a different genesis block:
-            uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
-            uint256 thash;
-            char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
- 
-            loop
-            {
-#if defined(USE_SSE2)
-                // Detection would work, but in cases where we KNOW it always has SSE2,
-                // it is faster to use directly than to use a function pointer or conditional.
-#if defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64) || (defined(MAC_OSX) && defined(__i386__))
-                // Always SSE2: x86_64 or Intel MacOS X
-                scrypt_1024_1_1_256_sp_sse2(BEGIN(block.nVersion), BEGIN(thash), scratchpad);
-#else
-                // Detect SSE2: 32bit x86 Linux or Windows
-                scrypt_1024_1_1_256_sp(BEGIN(block.nVersion), BEGIN(thash), scratchpad);
-#endif
-#else
-                // Generic scrypt
-                scrypt_1024_1_1_256_sp_generic(BEGIN(block.nVersion), BEGIN(thash), scratchpad);
-#endif
-                if (thash <= hashTarget)
-                    break;
-                if ((block.nNonce & 0xFFF) == 0)
-                {
-                    printf("nonce %08X: hash = %s (target = %s)\n", block.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
-                }
-                ++block.nNonce;
-                if (block.nNonce == 0)
-                {
-                    printf("NONCE WRAPPED, incrementing time\n");
-                    ++block.nTime;
-                }
-            }
-            printf("block.nTime = %u \n", block.nTime);
-            printf("block.nNonce = %u \n", block.nNonce);
-            printf("block.GetHash = %s\n", block.GetHash().ToString().c_str());
-        }
-        
         block.print();
         assert(hash == hashGenesisBlock);
 
